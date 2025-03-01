@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
+import { User } from "../types/app";
 
 export const JWT_PRIVATE_KEY = process.env.JWTKEY? process.env.JWTKEY :"KEY";
 
-export const createJWT = (user: any) => {
+export const createJWT = (user: User) => {
   return jwt.sign(
     {
       id: user.id,
@@ -14,9 +15,4 @@ export const createJWT = (user: any) => {
       expiresIn: "72h",
     }
   );
-};
-
-export const validateToken = (token: string) => {
-  const user = jwt.verify(token, JWT_PRIVATE_KEY);
-  return user;
 };

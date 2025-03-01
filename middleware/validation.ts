@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { AuthRequest } from "../types/app";
 
 /// Esta expresion regular para la contrasena contempla lo siguiente
 // Mínimo 8 caracteres de longitud
@@ -89,4 +90,3 @@ export const querySchemaCreateProduct = Joi.object({
   'ENTREGADO',
   'CANCELADO')
   });
-

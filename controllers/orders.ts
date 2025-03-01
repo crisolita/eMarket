@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { countOrders, createOrder, filterProducts, getAllOrders, getOrderById, getOrderHistory, updateOrder } from "../services/order";
-export const createOrderController = async (req: Request, res: Response) => {
+import { AuthRequest } from "../types/app";
+
+export const createOrderController = async (req: AuthRequest, res: Response) => {
     try {
-      //@ts-ignore
-      const USER= req.user;
       const {products} = req?.body;
       const filteredProducts=await filterProducts(products); 
       if ('Error' in filteredProducts) {
@@ -11,23 +11,21 @@ export const createOrderController = async (req: Request, res: Response) => {
         res.status(400).json(filteredProducts.Error)
         return
       } 
-      const order= await createOrder(USER.id,filteredProducts)
+      const order= await createOrder(req.user!.id,filteredProducts)
        res.status(200).json(order);
     } catch (error) {
       console.log(error);
       res.status(500).json(error);
     }
   };
-  export const getOrderHistoryController = async (req: Request, res: Response) => {
+  export const getOrderHistoryController = async (req: AuthRequest, res: Response) => {
     try {
-        //@ts-ignore
-      const USER= req.user;
        const page = parseInt(req.query.page as string) || 1;
            const limit = parseInt(req.query.limit as string) || 10;
            const skip = (page - 1) * limit;
          
            // Consulta a la base de datos usando Prisma
-           let orders=await getOrderHistory(USER.id,skip,limit)
+           let orders=await getOrderHistory(req.user!.id,skip,limit)
      
          const totalItems = await countOrders()
          
@@ -42,11 +40,8 @@ export const createOrderController = async (req: Request, res: Response) => {
       res.status(500).json(error);
     }
   };
-  export const updateOrderController = async (req: Request, res: Response) => {
+  export const updateOrderController = async (req: AuthRequest, res: Response) => {
     try {
-   
-      // @ts-ignore
-      const USER= req.user as User;
       const {orderId,orderStatus} = req?.body;
       let order= await getOrderById(orderId);
       if(!order)  res.status(404).json("Orden no encontrada");
@@ -57,7 +52,7 @@ export const createOrderController = async (req: Request, res: Response) => {
       res.status(500).json(error);
     }
   };
-  export const getAllOrderHistoryController = async (req: Request, res: Response) => {
+  export const getAllOrderHistoryController = async (req: AuthRequest, res: Response) => {
     try {
      
        const page = parseInt(req.query.page as string) || 1;

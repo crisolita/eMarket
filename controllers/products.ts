@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { countProducts, createProduct, deleteProductById, getAllProducts, getProductById, updateProduct } from "../services/products";
 import { v4 as uuidv4 } from 'uuid';
 import { getOrderItem } from "../services/order";
+import { AuthRequest } from "../types/app";
 
 
-export const createProductController = async (req: Request, res: Response) => {
+export const createProductController = async (req: AuthRequest, res: Response) => {
     try {
       const {name, description, price, stock} = req?.body;
       const product= await createProduct({id:uuidv4(),name,description,price,stock})
@@ -14,7 +15,7 @@ export const createProductController = async (req: Request, res: Response) => {
       res.status(500).json(error);
     }
   };
-  export const updateProductController = async (req: Request, res: Response) => {
+  export const updateProductController = async (req: AuthRequest, res: Response) => {
     try {
       const {id,name, description, price, stock} = req?.body;
       //Buscar si existe el producto
@@ -27,7 +28,7 @@ export const createProductController = async (req: Request, res: Response) => {
       res.status(500).json(error);
     }
   };
-  export const deleteProductController = async (req: Request, res: Response) => {
+  export const deleteProductController = async (req: AuthRequest, res: Response) => {
     try {
       const {id} = req?.body;
       //Buscar si existe el producto
@@ -42,7 +43,7 @@ export const createProductController = async (req: Request, res: Response) => {
       res.status(500).json(error);
     }
   };
-  export const getAllProductsController = async (req: Request, res: Response) => {
+  export const getAllProductsController = async (req: AuthRequest, res: Response) => {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;

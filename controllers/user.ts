@@ -3,10 +3,9 @@ import bcrypt from "bcrypt";
 import { createJWT } from "../utils/auth";
 import {
   createUser,
-  getAllUsers,
   getUserByEmail,
-  getUserById,updateUser
 } from "../services/user";
+import { AuthRequest } from "../types/app";
 
 
 export const userRegisterController = async (req: Request, res: Response):Promise<void>  => {
@@ -68,16 +67,10 @@ export const userLoginController = async (req: Request, res: Response) => {
 
 
 
-export const getUserInfo = async (req: Request, res: Response) => {
+export const getUserInfo = async (req: AuthRequest, res: Response) => {
   try {
+    const user = req.user!;
 
-    // @ts-ignore
-    const USER = req.user as User;
-    const user = await getUserById(USER.id);
-    if (!user) {
-     res.status(404).json({ error: "Usuario no encontrado" });
-     return;
-    }
      res.json({
       email: user.email,
       id: user.id,
@@ -85,6 +78,7 @@ export const getUserInfo = async (req: Request, res: Response) => {
       lastname: user.lastname,
       token: createJWT(user),
     });
+
   } catch (error) {
      res.status(500).json({ error: error });
   }
