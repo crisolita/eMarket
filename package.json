@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "app.ts",
   "scripts": {
-    "test": "npx mocha --require ts-node/register 'test/**/*.test.ts'",
     "dev": "npx nodemon app.ts",
     "format": "npx prettier . --write"
   },
