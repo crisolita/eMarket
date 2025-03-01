@@ -2,7 +2,7 @@ import express from "express";
 
 import Joivalidator from "express-joi-validation";
 import {  querySchemaCreateProduct, querySchemaDeleteProduct, querySchemaUpdateProduct } from "../middleware/validation";
-import {  createProductController, deleteProductController, getAllProductsController, updateProductController } from "../controllers/backoffice";
+import {  createProductController, deleteProductController, getAllProductsController, updateProductController } from "../controllers/products";
 import { isAdmin } from "../middleware/isAdmin";
 
 

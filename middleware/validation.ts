@@ -50,20 +50,7 @@ export const querySchemaLogin = Joi.object({
     )
     .messages(messagesPassword),
 });
-export const querySchemaGetRecoveryCode = Joi.object({
-  email: Joi.string().email({ minDomainSegments: 2 }).required().messages(messageEmail),
-});
 
-export const querySchemaChangePassword = Joi.object({
-  newPassword: Joi.string()
-    .required()
-    .pattern(
-      regexPass
-    )
-    .messages(messagesPassword),
-  email: Joi.string().email({ minDomainSegments: 2 }).required().messages(messageEmail),
-  authCode: Joi.string().min(6).required(),
-});
 
 /// ####################### BACKOFFICE #########################
 export const querySchemaCreateProduct = Joi.object({

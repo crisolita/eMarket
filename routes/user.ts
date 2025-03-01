@@ -2,8 +2,8 @@ import express from "express";
 
 import Joivalidator from "express-joi-validation";
 import { authenticateToken } from "../middleware/auth";
-import { changePasswordController, getRecoveryCode, getUserInfo, userLoginController, userRegisterController } from "../controllers/user";
-import { querySchemaChangePassword, querySchemaGetRecoveryCode, querySchemaLogin, querySchemaRegistro } from "../middleware/validation";
+import {  getUserInfo, userLoginController, userRegisterController } from "../controllers/user";
+import {  querySchemaLogin, querySchemaRegistro } from "../middleware/validation";
 
 
 const validator = Joivalidator.createValidator({ passError: true });
@@ -16,17 +16,6 @@ router.post(
   userRegisterController
 );
 router.post("/login", validator.body(querySchemaLogin), userLoginController);
-
-router.put(
-  "/getRecovery",
-  validator.body(querySchemaGetRecoveryCode),
-  getRecoveryCode
-);
-router.put(
-  "/changePassword",
-  validator.body(querySchemaChangePassword),
-  changePasswordController
-);
 
 router.get("/getUserInfo", authenticateToken, getUserInfo);
 

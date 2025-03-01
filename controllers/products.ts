@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { countProducts, createProduct, deleteProductById, getAllProducts, getProductById, updateProduct } from "../services/backoffice";
+import { countProducts, createProduct, deleteProductById, getAllProducts, getProductById, updateProduct } from "../services/products";
 import { v4 as uuidv4 } from 'uuid';
 import { getOrderItem } from "../services/order";
 

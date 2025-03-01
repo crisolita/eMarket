@@ -65,54 +65,6 @@ export const userLoginController = async (req: Request, res: Response) => {
   }
 };
 
-export const getRecoveryCode = async (req: Request, res: Response) => {
-  try {
-    let authCode = JSON.stringify(
-      Math.round(Math.random() * (999999 - 100000) + 100000)
-    );
-    const salt = bcrypt.genSaltSync();
- 
-    const { email } = req?.body;
-    const user = await getUserByEmail(email);
-    if(!user) {
-      res.status(400).json({ error: "Email incorrecto" });
-      return
-    }
-     // Si el usuario existe, se actualiza su campo authToken con el código encriptado
-      await updateUser(
-        user.id,
-        { authToken: bcrypt.hashSync(authCode, salt) }
-      );
-    // Responde con un mensaje de éxito indicando que el código fue enviado
-       res.status(200).json({
-        data: `Se ha enviado código de validación al correo: ${email}`,
-      });
-  } catch (error) {
-     res.status(500).json(error);
-  }
-};
-
-export const changePasswordController = async (req: Request, res: Response) => {
-  try {
-  
-    const { newPassword, authCode, email } = req?.body;
-    const user = await getUserByEmail(email);
-    if (user) {
-    // Si el usuario existe se comprueba que el codigo ingresado sea el previamente enviado
-      if (bcrypt.compareSync(authCode, user.authToken ? user.authToken : "")) {
-        const salt = bcrypt.genSaltSync();
-        await updateUser(
-          user.id,
-          { password: bcrypt.hashSync(newPassword, salt) }        );
-         res.status(200).json({ data: "Contraseña cambiada con exito!" });
-      } else  res.status(400).json({ error: "Token 2fa incorrecto." });
-    } else {
-       res.status(404).json({ error: "Usuario no existe." });
-    }
-  } catch (error) {
-     res.status(500).json({ error: error });
-  }
-};
 
 
 
