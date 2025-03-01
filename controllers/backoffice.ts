@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { createProduct, deleteProductById, getAllProducts, getProductById, updateProduct } from "../services/backoffice";
 import { v4 as uuidv4 } from 'uuid';
+import { getOrderItem } from "../services/order";
 
 
 export const createProductController = async (req: Request, res: Response) => {
@@ -35,10 +36,10 @@ export const createProductController = async (req: Request, res: Response) => {
     try {
       // @ts-ignore
       const prisma = req.prisma as PrismaClient;
-      // @ts-ignore
-      const USER= req.user as User;
       const {id} = req?.body;
       //Buscar si existe el producto
+      let orderItem=await getOrderItem(id,prisma)
+      if(orderItem) res.status(400).json("Producto en un orden no puede ser eliminado");
       let product=await getProductById(id,prisma)
       if(!product) res.status(404).json("Producto no encontrado");
        product= await deleteProductById(id,prisma)

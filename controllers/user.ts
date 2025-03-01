@@ -56,10 +56,9 @@ export const userLoginController = async (req: Request, res: Response) => {
     const prisma = req.prisma as PrismaClient;
     const { email, password } = req?.body;
     const user = await getUserByEmail(email, prisma);
-    const salt = bcrypt.genSaltSync();
 
     // Verifica si el usuario existe y si la contraseña es correcta
-    if (user && user.password && bcrypt.compareSync(password, user.password)) {
+    if (user && bcrypt.compareSync(password, user.password)) {
         res.status(200).json({
           email: user.email,
           userid: user.id,
@@ -68,13 +67,14 @@ export const userLoginController = async (req: Request, res: Response) => {
           token: createJWT(user),
         });
     } else {
-       res.status(400).json({ error: "Email o contraaseña incorrectos" });
+       res.status(400).json({ error: "Email o contraseña incorrectos" });
     }
   } catch (error) {
     console.log(error);
      res.status(500).json(error);
   }
 };
+
 export const getRecoveryCode = async (req: Request, res: Response) => {
   try {
     let authCode = JSON.stringify(

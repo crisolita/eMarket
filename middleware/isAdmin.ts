@@ -26,7 +26,7 @@ export function isAdmin(req: Request, res: Response, next: NextFunction): void {
     try {
       const usuario = await getUserById(user.id, prisma);
 
-      if (usuario?.email !== "admin@gmail.com") {
+      if (usuario?.userRol !== "ADMIN") {
         res.sendStatus(403); // Si no es admin, se responde con 403
         return; 
       }

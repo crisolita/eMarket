@@ -19,6 +19,7 @@ model User {
   password      String
   firstname     String
   lastname      String
+  userRol       USEROL           @default(CLIENT)
   authToken     String?
 }
 model Product {
@@ -52,4 +53,8 @@ enum STATUS {
   PAGADO
   ENTREGADO
   CANCELADO
+}
+enum USEROL {
+  ADMIN
+  CLIENT
 }

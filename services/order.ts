@@ -18,36 +18,67 @@ export const createOrder = async (userId:number,
     }
 })
  }
- export const getWholeItems= async (items:{ productId: string, quantity: number }[],prisma:PrismaClient)=>{
+ export const filterProducts = async (
+  products: { productId: string; quantity: number }[],
+  prisma: PrismaClient
+) => {
   type Item = {
     productId: string;
     quantity: number;
     price: number;
   };
-  
-  let wholeItems: Item[] = [];
-    for(let item of items) {
-        const product=await prisma.product.findUnique({where:{id:item.productId}})
-        if(product && product.stock>=item.quantity) {
-            /// Si existe el producto y hay suficiente completamos con el precio
-            wholeItems.push({
-                productId:item.productId,
-                quantity:item.quantity,
-                price:product.price
-            })
-            await prisma.product.update({where:{id:product.id},data:{stock:product.stock-item.quantity}})
-        } else if( product && product.stock>0) {
-            // si existe pero no hay suficiente se le coloca todo lo que haya en stock
-            wholeItems.push({
-                productId:item.productId,
-                quantity:product.stock,
-                price:product.price
-            })
-            await prisma.product.update({where:{id:product.id},data:{stock:0}})
-        }
+
+  // Obtener solo los productos necesarios de la base de datos
+  const productIds = products.map(p => p.productId);
+  const items = await prisma.product.findMany({
+    where: { id: { in: productIds } }
+  });
+
+  // Mapa para acceso rápido por ID
+  const productMap = new Map(items.map(item => [item.id, item]));
+
+  let errors: string[] = [];
+  let verifiedProducts: Item[] = [];
+
+  for (let product of products) {
+    const existingProduct = productMap.get(product.productId);
+
+    if (!existingProduct) {
+      errors.push(`Este producto no existe: ${product.productId}`);
+      continue;
     }
-    return wholeItems;
-}
+
+    if (product.quantity > existingProduct.stock) {
+      errors.push(`Stock insuficiente para el producto: ${existingProduct.id}, disponible: ${existingProduct.stock}, Nombre: ${existingProduct.name}`);
+      continue;
+    }
+
+    verifiedProducts.push({
+      productId: existingProduct.id,
+      quantity: product.quantity,
+      price: existingProduct.price
+    });
+
+    existingProduct.stock -= product.quantity;
+  }
+
+  if (errors.length > 0) {
+    return { Error: errors };
+  }
+
+  // Actualizar los stocks en batch
+  await Promise.all(
+    verifiedProducts.map(product =>
+      prisma.product.update({
+        where: { id: product.productId },
+        data: { stock: productMap.get(product.productId)?.stock }
+      })
+    )
+  );
+
+  return verifiedProducts;
+};
+
 export async function getOrderHistory(userId: number,skip:number,limit:number,prisma:PrismaClient) {
     return await prisma.order.findMany({skip,take:limit,
       where: { userId },
@@ -78,6 +109,12 @@ export async function getOrderHistory(userId: number,skip:number,limit:number,pr
         data:{...data}
     });
   }
+  export async function getOrderItem(productId: string,prisma:PrismaClient) {
+    return await prisma.orderItem.findFirst({
+      where: { productId },
+    });
+  }
+  
   export async function getAllOrders(skip:number,limit:number,prisma:PrismaClient) {
     return await prisma.order.findMany({skip,take:limit,
       include: {

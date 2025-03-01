@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { createOrder, getAllOrders, getOrderById, getOrderHistory, getWholeItems, updateOrder } from "../services/order";
+import { createOrder, filterProducts, getAllOrders, getOrderById, getOrderHistory, updateOrder } from "../services/order";
+import { getAllProducts } from "../services/backoffice";
 
 export const createOrderController = async (req: Request, res: Response) => {
     try {
@@ -7,11 +8,15 @@ export const createOrderController = async (req: Request, res: Response) => {
       const prisma = req.prisma as PrismaClient;
       // @ts-ignore
       const USER= req.user as User;
-      const {items} = req?.body;
-      // En esta funcion filtramos solo los productos existentes y agregamos el precio al arreglo 
-      // se reduce el stock de cada producto
-      const wholeItems=await getWholeItems(items,prisma); 
-      const order= await createOrder(USER.id,wholeItems,prisma)
+      const {products} = req?.body;
+      // 
+      const filteredProducts=await filterProducts(products,prisma); 
+      if ('Error' in filteredProducts) {
+        console.error("Ocurrió un error:", filteredProducts.Error);
+        res.status(400).json(filteredProducts.Error)
+        return
+      } 
+      const order= await createOrder(USER.id,filteredProducts,prisma)
        res.status(200).json(order);
     } catch (error) {
       console.log(error);

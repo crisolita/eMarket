@@ -97,7 +97,7 @@ export const querySchemaCreateProduct = Joi.object({
   /// ####################### ORDERS #########################
 
   export const querySchemaCreateOrder = Joi.object({
-    items: Joi.array()
+    products: Joi.array()
     .items(
       Joi.object({
         productId: Joi.string().required(),
@@ -108,8 +108,8 @@ export const querySchemaCreateProduct = Joi.object({
     .required()
   });
   export const querySchemaUpdateOrder = Joi.object({
-    orderId:Joi.number().integer().positive(),
-    status:Joi.string().valid('PENDIENTE_PAGO',
+    orderId:Joi.number().integer().positive().required(),
+    orderStatus:Joi.string().valid('PENDIENTE_PAGO',
   'PAGADO',
   'ENTREGADO',
   'CANCELADO')
