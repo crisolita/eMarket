@@ -1,26 +1,38 @@
 import Joi from "joi";
 
+/// Esta expresion regular para la contrasena contempla lo siguiente
+// Mínimo 8 caracteres de longitud
+// ✅ Al menos 1 letra mayúscula (A-Z)
+// ✅ Al menos 1 número (0-9)
+// ✅ Al menos 1 carácter especial 
+// Ejemplos de contraseñas válidas
+// 🔹 Abcdef1!
+// 🔹 P@ssw0rd123
+// 🔹 XyZ9#qwerty
+const regexPass=  new RegExp(
+  /^(?=.*[A-Z])(?=.*[0-9])(?=.*[`~!@#$%^&*()\-_=+[{\]}|\\;:'",<.>\/?])[A-Za-z0-9`~!@#$%^&*()\-_=+[{\]}|\\;:'",<.>\/?]{8,}$/
+)
+const messagesPassword={
+  "string.base": `Contraseña debe ser de tipo texto`,
+  "string.empty": `Contraseña no puede estar vacio`,
+  "string.min": `Contraseña debe tener al menos 8 caracteres`,
+  "string.required": `Contraseña es requerida`,
+  "string.pattern.base": "No cumple las condiciones de contraseña",
+}
+const messageEmail={
+    "string.default": "El email debe ser valido",
+    "string.required": `Email es requerido`,
+    "string.email": "Debe ser un email valido",
+}
 /// USER
 export const querySchemaRegistro = Joi.object({
   password: Joi.string()
     .required()
     .pattern(
-      new RegExp(
-        /^(?=.*[A-Z])(?=.*[0-9])(?=.*[`~!@#$%^&*()\-_=+[{\]}|\\;:'",<.>\/?])[A-Za-z0-9`~!@#$%^&*()\-_=+[{\]}|\\;:'",<.>\/?]{8,}$/
-      )
+     regexPass
     )
-    .messages({
-      "string.base": `Contraseña debe ser de tipo texto`,
-      "string.empty": `Contraseña no puede estar vacio`,
-      "string.min": `Contraseña debe tener al menos 8 caracteres`,
-      "string.required": `Contraseña es requerida`,
-      "string.pattern.base": "No cumple las condiciones de contraseña",
-    }),
-  email: Joi.string().email({ minDomainSegments: 2 }).required().messages({
-    "string.default": "El email debe ser valido",
-    "string.required": `Email es requerido`,
-    "string.email": "Debe ser un email valido",
-  }),
+    .messages(messagesPassword),
+  email: Joi.string().email({ minDomainSegments: 2 }).required().messages(messageEmail),
   firstname: Joi.string().required(),
   lastname: Joi.string().required(),
 });
@@ -34,46 +46,22 @@ export const querySchemaLogin = Joi.object({
   password: Joi.string()
     .required()
     .pattern(
-      new RegExp(
-        /^(?=.*[A-Z])(?=.*[0-9])(?=.*[`~!@#$%^&*()\-_=+[{\]}|\\;:'",<.>\/?])[A-Za-z0-9`~!@#$%^&*()\-_=+[{\]}|\\;:'",<.>\/?]{8,}$/
-      )
+      regexPass
     )
-    .messages({
-      "string.base": `Contraseña debe ser de tipo texto`,
-      "string.empty": `Contraseña no puede estar vacio`,
-      "string.min": `Contraseña debe tener al menos 8 caracteres`,
-      "string.required": `Contraseña es requerida`,
-      "string.pattern.base": "No cumple las condiciones de contraseña",
-    }),
+    .messages(messagesPassword),
 });
 export const querySchemaGetRecoveryCode = Joi.object({
-  email: Joi.string().email({ minDomainSegments: 2 }).required().messages({
-    "string.default": "El email debe ser valido",
-    "string.required": `Email es requerido`,
-    "string.email": "Debe ser un email valido",
-  }),
+  email: Joi.string().email({ minDomainSegments: 2 }).required().messages(messageEmail),
 });
 
 export const querySchemaChangePassword = Joi.object({
   newPassword: Joi.string()
     .required()
     .pattern(
-      new RegExp(
-        /^(?=.*[A-Z])(?=.*[0-9])(?=.*[`~!@#$%^&*()\-_=+[{\]}|\\;:'",<.>\/?])[A-Za-z0-9`~!@#$%^&*()\-_=+[{\]}|\\;:'",<.>\/?]{8,}$/
-      )
+      regexPass
     )
-    .messages({
-      "string.base": `Contraseña debe ser de tipo texto`,
-      "string.empty": `Contraseña no puede estar vacio`,
-      "string.min": `Contraseña debe tener al menos 8 caracteres`,
-      "string.required": `Contraseña es requerida`,
-      "string.pattern.base": "No cumple las condiciones de contraseña",
-    }),
-  email: Joi.string().email({ minDomainSegments: 2 }).required().messages({
-    "string.default": "El email debe ser valido",
-    "string.required": `Email es requerido`,
-    "string.email": "Debe ser un email valido",
-  }),
+    .messages(messagesPassword),
+  email: Joi.string().email({ minDomainSegments: 2 }).required().messages(messageEmail),
   authCode: Joi.string().min(6).required(),
 });
 

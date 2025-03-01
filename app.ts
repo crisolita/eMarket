@@ -1,24 +1,17 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { PrismaClient } from "@prisma/client";
 import userRouter from "./routes/user";
 import backofficeRouter from "./routes/backoffice";
 import orderRouter from "./routes/orders"
 dotenv.config();
 
-const prisma = new PrismaClient();
 export const app: Express = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-  // @ts-ignore
-  req.prisma = prisma;
-  next();
-});
 app.use("/user", userRouter);
 app.use("/backoffice", backofficeRouter);
 app.use("/order",orderRouter );

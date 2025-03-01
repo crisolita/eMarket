@@ -4,8 +4,6 @@ import { JWT_PRIVATE_KEY } from "../utils/auth";
 import { getUserById } from "../services/user";
 
 export function isAdmin(req: Request, res: Response, next: NextFunction): void {
-  // @ts-ignore
-  const prisma = req.prisma as PrismaClient;
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -24,7 +22,7 @@ export function isAdmin(req: Request, res: Response, next: NextFunction): void {
     req.user = user;
 
     try {
-      const usuario = await getUserById(user.id, prisma);
+      const usuario = await getUserById(user.id);
 
       if (usuario?.userRol !== "ADMIN") {
         res.sendStatus(403); // Si no es admin, se responde con 403

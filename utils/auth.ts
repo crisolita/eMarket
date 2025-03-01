@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-export const JWT_PRIVATE_KEY = "BLOCKPROJECT";
+export const JWT_PRIVATE_KEY = process.env.JWTKEY? process.env.JWTKEY :"KEY";
 
 export const createJWT = (user: any) => {
   return jwt.sign(

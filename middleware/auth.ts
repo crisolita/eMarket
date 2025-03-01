@@ -4,7 +4,7 @@ import { JWT_PRIVATE_KEY } from "../utils/auth";
 
 // Extender Request para incluir user
 interface CustomRequest extends Request {
-  user?: string | JwtPayload;
+  user?:  string | JwtPayload;
 }
 
 export function authenticateToken(req: CustomRequest, res: Response, next: NextFunction) {
@@ -16,7 +16,7 @@ export function authenticateToken(req: CustomRequest, res: Response, next: NextF
     return;
   }   // Si no hay token, rechazar acceso
 
-  jwt.verify(token, JWT_PRIVATE_KEY as string, (err, user) => {
+  jwt.verify(token, JWT_PRIVATE_KEY as string,async (err, user) => {
     if (err) return res.sendStatus(401); // Si el token es inválido, rechazar acceso
 
     req.user = user; // Guardar el usuario en la request

@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "../prisma/prisma";
 
 export const createProduct = async (
   data: { id:string, name: string; description: string, price:number, stock:number},
-  prisma: PrismaClient
 ) => {
   return await prisma.product.create({
    data:{...data}
@@ -10,7 +9,6 @@ export const createProduct = async (
 };
 export const updateProduct = async (id:string,
     data: { name: string; description: string, price:number, stock:number},
-    prisma: PrismaClient
   ) => {
     return await prisma.product.update({
         where: { id },
@@ -20,19 +18,19 @@ export const updateProduct = async (id:string,
       });
   };
 
+  export const countProducts=  async () => {
+    return await prisma.product.count();
+  }; 
   export const getAllProducts=  async (skip:number,limit:number,
-    prisma: PrismaClient
   ) => {
     return await prisma.product.findMany({skip,take:limit});
   }; 
   export const getProductById=  async (id:string,
-    prisma: PrismaClient
   ) => {
     return await prisma.product.findUnique({where:{id}});
   }; 
   export const deleteProductById=  async (
     id:string,
-    prisma: PrismaClient
   ) => {
     return await prisma.product.delete({where:{id}});
   }; 

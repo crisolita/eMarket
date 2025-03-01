@@ -1,8 +1,8 @@
-import { PrismaClient ,STATUS} from "@prisma/client";
+import {  STATUS} from "@prisma/client";
+import prisma from "../prisma/prisma";
 
 export const createOrder = async (userId:number,
     items: { productId: string, quantity: number,price:number }[],
-  prisma: PrismaClient
 ) => {
    return await prisma.order.create({
    data:{
@@ -20,7 +20,6 @@ export const createOrder = async (userId:number,
  }
  export const filterProducts = async (
   products: { productId: string; quantity: number }[],
-  prisma: PrismaClient
 ) => {
   type Item = {
     productId: string;
@@ -79,7 +78,7 @@ export const createOrder = async (userId:number,
   return verifiedProducts;
 };
 
-export async function getOrderHistory(userId: number,skip:number,limit:number,prisma:PrismaClient) {
+export async function getOrderHistory(userId: number,skip:number,limit:number) {
     return await prisma.order.findMany({skip,take:limit,
       where: { userId },
       include: {
@@ -91,7 +90,10 @@ export async function getOrderHistory(userId: number,skip:number,limit:number,pr
       },
     });
   }
-  export async function getOrderById(orderId: number,prisma:PrismaClient) {
+  export async function countOrders() {
+    return await prisma.order.count()
+  }
+  export async function getOrderById(orderId: number) {
     return await prisma.order.findUnique({
       where: { id: orderId },
       include: {
@@ -103,19 +105,19 @@ export async function getOrderHistory(userId: number,skip:number,limit:number,pr
       },
     });
   }
-  export async function updateOrder(orderId: number,data:{orderStatus:STATUS},prisma:PrismaClient) {
+  export async function updateOrder(orderId: number,data:{orderStatus:STATUS}) {
     return await prisma.order.update({
       where: { id: orderId },
         data:{...data}
     });
   }
-  export async function getOrderItem(productId: string,prisma:PrismaClient) {
+  export async function getOrderItem(productId: string) {
     return await prisma.orderItem.findFirst({
       where: { productId },
     });
   }
   
-  export async function getAllOrders(skip:number,limit:number,prisma:PrismaClient) {
+  export async function getAllOrders(skip:number,limit:number) {
     return await prisma.order.findMany({skip,take:limit,
       include: {
         OrderItem: {
