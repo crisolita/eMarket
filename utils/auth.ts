@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { User } from "../types/app";
 
-export const JWT_PRIVATE_KEY = process.env.JWTKEY? process.env.JWTKEY :"KEY";
+export const JWT_PRIVATE_KEY = process.env.JWTKEY ? process.env.JWTKEY : "KEY";
 
 export const createJWT = (user: User) => {
   return jwt.sign(
@@ -13,6 +13,6 @@ export const createJWT = (user: User) => {
     JWT_PRIVATE_KEY,
     {
       expiresIn: "72h",
-    }
+    },
   );
 };

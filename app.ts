@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import userRouter from "./routes/user";
 import productsRouter from "./routes/products";
-import orderRouter from "./routes/orders"
+import orderRouter from "./routes/orders";
 dotenv.config();
 
 export const app: Express = express();
@@ -14,8 +14,7 @@ app.use(express.json());
 
 app.use("/user", userRouter);
 app.use("/backoffice", productsRouter);
-app.use("/order",orderRouter );
-
+app.use("/order", orderRouter);
 
 // Middleware para manejar errores de Joi
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

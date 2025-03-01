@@ -6,10 +6,10 @@ export type User = {
   password: string;
   firstname: string;
   lastname: string;
-  userRol: 'ADMIN' | 'CLIENT';
+  userRol: "ADMIN" | "CLIENT";
   authToken: string | null;
-}
+};
 
 export interface AuthRequest extends Request {
-    user?: User;
-  }
+  user?: User;
+}
