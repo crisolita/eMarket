@@ -40,6 +40,18 @@ npm run dev
 
 ✔ Evita errores gracias a los tipos de TypeScript.
 
+📌 Elección del Sistema de Base de Datos y Arquitectura
+
+Base de Datos: Se seleccionó PostgreSQL por su robustez, escalabilidad y compatibilidad con transacciones ACID.
+
+ORM: Prisma se utilizó para facilitar la gestión de datos, mejorar la seguridad y optimizar consultas.
+
+Arquitectura: Se adoptó una estructura modular con NestJS, siguiendo principios de separación de responsabilidades y escalabilidad.
+
+Autenticación: Se implementó JWT + Passport para autenticación segura y control de acceso.
+
+🔹 Stack Tecnológico Principal: Express | Prisma | PostgreSQL | Swagger | Joi
+
 Recuerda autorizarte con tu token JWT en la esquina superior derecha del swagger
 
 ![alt text](<Screenshot 2025-03-01 at 9.35.39 PM.png>)
