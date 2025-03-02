@@ -32,9 +32,12 @@ npm run dev
 
 📄 Swagger disponible en: http://localhost:3000/api/docs
 ✔ Documentación interactiva sin necesidad de escribir archivos manuales.
+
 ✔ Mejora la experiencia de desarrollo permitiendo probar los endpoints desde el navegador.
+
 ✔ Se mantiene actualizada conforme cambia tu código.
+
 ✔ Evita errores gracias a los tipos de TypeScript.
 
-Recuerda autorizarte en la esquina superior derecha del swagger
+Recuerda autorizarte con tu token JWT en la esquina superior derecha del swagger
 ![alt text](<Screenshot 2025-03-01 at 9.35.39 PM.png>)
