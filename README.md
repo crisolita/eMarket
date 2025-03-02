@@ -42,15 +42,15 @@ npm run dev
 
 📌 Elección del Sistema de Base de Datos y Arquitectura
 
-Base de Datos: Se seleccionó PostgreSQL por su robustez, escalabilidad y compatibilidad con transacciones ACID.
+Base de Datos: Se eligió PostgreSQL por su estabilidad, escalabilidad y soporte para transacciones ACID.
 
-ORM: Prisma se utilizó para facilitar la gestión de datos, mejorar la seguridad y optimizar consultas.
+ORM: Prisma facilita la gestión de datos con consultas eficientes y tipadas.
 
-Arquitectura: Se adoptó una estructura modular con NestJS, siguiendo principios de separación de responsabilidades y escalabilidad.
+Framework: Express.js fue seleccionado por su flexibilidad y rendimiento en APIs REST.
 
-Autenticación: Se implementó JWT + Passport para autenticación segura y control de acceso.
+Autenticación: Se implementó JWT + middleware de autenticación para control de acceso.
 
-🔹 Stack Tecnológico Principal: Express | Prisma | PostgreSQL | Swagger | Joi
+🔹 Stack Tecnológico Principal: Express.js | Prisma | PostgreSQL | Swagger | Joi
 
 Recuerda autorizarte con tu token JWT en la esquina superior derecha del swagger
 
