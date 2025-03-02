@@ -4,17 +4,19 @@ import cors from "cors";
 import userRouter from "./routes/user";
 import productsRouter from "./routes/products";
 import orderRouter from "./routes/orders";
+import { setupSwagger } from "./swagger";
 dotenv.config();
 
 export const app: Express = express();
 const port = process.env.PORT || 3000;
+setupSwagger(app);
 
 app.use(cors());
 app.use(express.json());
 
 app.use("/user", userRouter);
-app.use("/backoffice", productsRouter);
-app.use("/order", orderRouter);
+app.use("/products", productsRouter);
+app.use("/orders", orderRouter);
 
 // Middleware para manejar errores de Joi
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

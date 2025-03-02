@@ -19,6 +19,7 @@ export function isAdmin(
 
   jwt.verify(token, JWT_PRIVATE_KEY, async (err, payload) => {
     if (err || !payload || typeof payload === "string") {
+      console.log(payload, "soy un payload");
       res.sendStatus(401); // En caso de error, se envía una respuesta 401
       return;
     }
